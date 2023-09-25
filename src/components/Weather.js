@@ -2,9 +2,21 @@ import { useState } from "react";
 
 function Weather() {
     
-    
+    const KEY = '43b402a38fd7ebfa680ccacec1920195';
     const [input, setInput] = useState({ city: "", country: ""})
 
+    async function fetchWeatherData(e) {
+
+        e.preventDefault();
+        if (input.city === "") {
+            alert("Please enter a city")
+        }
+        else {
+            const weatherData = await fetch(
+                `https://api.openweathermap.org/data/2.5/weather?q=${input.city},${input.country}&appid=${KEY}`)
+                .then((res) => console.log(res.json()));
+        }
+    }
     const handle = (e) => {
         let name = e.target.name;
         let value = e.target.value;
@@ -29,7 +41,7 @@ function Weather() {
                 <input type="text" name="country"  />
                 <br />
 
-                <button className="getWeather">Get Weather</button>
+                <button className="getWeather" onClick={(e) => fetchWeatherData(e)}>Get Weather</button>
             </form>
         </div>
     )
